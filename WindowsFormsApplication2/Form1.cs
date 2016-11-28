@@ -40,73 +40,9 @@ namespace WindowsFormsApplication2
             linkLabel2.Text = saveFileDialog1.FileName;
         }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            folderBrowserDialog1.ShowDialog();
-            linkLabel3.Text = folderBrowserDialog1.SelectedPath;
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*
-                       System.IO.FileStream fSysInput = new System.IO.FileStream(linkLabel1.Text, System.IO.FileMode.Open);
-                       System.IO.FileStream fSysOutput = new System.IO.FileStream(linkLabel2.Text, System.IO.FileMode.Create);
-
-
-
-                   byte[] buffer = new byte[256];
-                   int CountReader = 0;
-                   while ((CountReader = fSysInput.Read(buffer, 0, buffer.Length)) > 0)
-                   {
-                       fSysOutput.Write(buffer, 0, CountReader);
-
-                   }
-                   fSysInput.Close();
-                   fSysOutput.Close();
-
-                   int i = 0;
-                   progressBar1.Value = 0;
-                   progressBar1.Refresh();
-                   double a;
-                   int l;
-
-                   chart1.Series[0].Points.Clear();
-
-                   for (int k = 0; k < 360; k++)
-                   {
-                       a = Math.Sin(Math.PI/180*k);
-                       progressBar1.Increment(1);
-                       chart1.Series[0].Points.AddXY(k, a);
-
-                   }
-                   timer1.Interval = 1000;
-                   timer1.Start();
-                   progressBar1.Value = 0;
-       */
-
-            /*           XmlTextWriter textWritter = new XmlTextWriter(linkLabel3.Text + "\\save.xml");
-                       textWritter.WriteStartDocument();
-
-                       textWritter.WriteStartElement("Root");
-                       textWritter.WriteAttributeString("Type", "Inetec.Utility.Persistency.InetecFileHeader");
-                              textWritter.WriteEndElement();
-                       textWritter.Close();
-
-                       XmlDocument xml_doc = new XmlDocument();
-                       xml_doc.Load(linkLabel3.Text + "\\save.xml");
-                       //  xml_doc.DocumentElement.ChildNodes.
-                       //      xml_doc.Load("X.xml");
-                       XmlNode headerVersion = xml_doc.CreateElement("headerVersion");
-                       headerVersion.InnerText = "1";
-                       xml_doc.DocumentElement.AppendChild(headerVersion);
-                       XmlNode fileType = xml_doc.CreateElement("fileType");
-                       fileType.InnerText = "EddyOneTubeRawData";
-                       xml_doc.DocumentElement.AppendChild(fileType);
-
-
-
-                       xml_doc.Save(linkLabel3.Text + "\\save.xml");
-               */
 
 
             using (StreamWriter sw = new StreamWriter(linkLabel2.Text, false, System.Text.Encoding.Default))
