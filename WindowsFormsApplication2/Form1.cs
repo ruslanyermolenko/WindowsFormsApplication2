@@ -40,12 +40,9 @@ namespace WindowsFormsApplication2
             linkLabel2.Text = saveFileDialog1.FileName;
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        private void MakeHeader (string filename)
         {
-
-
-            using (StreamWriter sw = new StreamWriter(linkLabel2.Text, false, System.Text.Encoding.Default))
+            using (StreamWriter sw = new StreamWriter(filename, false, System.Text.Encoding.Default))
             {
                 sw.Write("f"); sw.Write('\x01');
                 sw.Write('\x00'); sw.Write('\x00');
@@ -228,12 +225,18 @@ namespace WindowsFormsApplication2
                 sw.Write("</Root>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
 
             }
+
+
         }
 
-        private void chart1_Click(object sender, EventArgs e)
+
+        private void button1_Click(object sender, EventArgs e)
         {
+            MakeHeader(linkLabel2.Text);
 
         }
+
+   
 
         private void timer1_Tick(object sender, EventArgs e)
         {
