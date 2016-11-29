@@ -234,12 +234,20 @@ namespace WindowsFormsApplication2
             BinaryWriter outbinfile = new BinaryWriter(outDatafile);
 
             FileStream inDatafile = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
-
+            const int bufferSize = 4;
+            int count;
             using (BinaryReader inbinfile = new BinaryReader(inDatafile))
             {
-
-                outbinfile.Write(inbinfile.ReadByte());
-
+                byte[] buffer = new byte[bufferSize];
+                // outbinfile.Write(inbinfile.ReadByte());
+                while ((count = inbinfile.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    outbinfile.Write(buffer[3]);
+                    outbinfile.Write(buffer[2]);
+                    outbinfile.Write(buffer[1]);
+                    outbinfile.Write(buffer[0]);
+                }
+                      
             }
 
             outbinfile.Close();
