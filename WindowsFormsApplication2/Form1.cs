@@ -251,8 +251,8 @@ namespace WindowsFormsApplication2
             }
 
             outbinfile.Close();
-            outDatafile.Close();
-            inDatafile.Close();
+            outDatafile.Dispose();
+            inDatafile.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
