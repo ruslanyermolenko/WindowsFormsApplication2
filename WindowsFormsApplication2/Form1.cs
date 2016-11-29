@@ -228,11 +228,29 @@ namespace WindowsFormsApplication2
 
 
         }
+        private void SaveData(string inputFile, string outputfile)
+        {
+            FileStream outDatafile = new FileStream(outputfile, FileMode.Append);
+            BinaryWriter outbinfile = new BinaryWriter(outDatafile);
 
+            FileStream inDatafile = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
+
+            using (BinaryReader inbinfile = new BinaryReader(inDatafile))
+            {
+
+                outbinfile.Write(inbinfile.ReadByte());
+
+            }
+
+            outbinfile.Close();
+            outDatafile.Close();
+            inDatafile.Close();
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
             MakeHeader(linkLabel2.Text);
+            SaveData(linkLabel1.Text, linkLabel2.Text);
 
         }
 
