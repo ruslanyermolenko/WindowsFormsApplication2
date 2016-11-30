@@ -203,6 +203,11 @@ namespace WindowsFormsApplication2
 
 
         }
+        public static int MakeWord(byte low, byte high)
+        {
+            return ((int)high << 8) | low;
+        }
+
         private void SaveData(string inputFile, string outputfile)
         {
             FileStream outDatafile = new FileStream(outputfile, FileMode.Append);
@@ -222,14 +227,37 @@ namespace WindowsFormsApplication2
                 //  numPoints = 4795; //hexadecimal values BB 12 00 00 represent decimal number 4795, the data points.
                 //  byte[] byteArray_numPoints = BitConverter.GetBytes(numPoints);
                 outbinfile.Write(numPoints);
+                int x280, x130, x60, x60a;
+                int y280, y130, y60, y60a;
+
+
                 while ((count = inbinfile.Read(buffer, 0, buffer.Length)) != 0)
                 {
-         //           outbinfile.Write(buffer[3]);
-         //           outbinfile.Write(buffer[2]);
-         //           outbinfile.Write(buffer[1]);
-         //           outbinfile.Write(buffer[0]);
+                    x280 = MakeWord(buffer[0] , buffer[1]);
+                    y280 = MakeWord(buffer[2] , buffer[3]);
+
+                    x130 = MakeWord(buffer[4], buffer[5]);
+                    y130 = MakeWord(buffer[6], buffer[7]);
+
+                    x60 = MakeWord(buffer[8], buffer[9]);
+                    y60 = MakeWord(buffer[10], buffer[11]);
+
+                    x60a = MakeWord(buffer[12], buffer[13]);
+                    y60a = MakeWord(buffer[14], buffer[15]);
+
+                    outbinfile.Write(x280);
+                    outbinfile.Write(x130);
+                    outbinfile.Write(x60);
+                    outbinfile.Write(x60a);
+
+                    outbinfile.Write(y280);
+                    outbinfile.Write(y130);
+                    outbinfile.Write(y60);
+                    outbinfile.Write(y60a);
+
+
                 }
-                      
+
             }
 
             outbinfile.Close();
