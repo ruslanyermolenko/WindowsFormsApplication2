@@ -60,8 +60,8 @@ namespace WindowsFormsApplication2
                 sw.Write("<?xml version=\"1.0\"?>"); sw.Write('\x0D'); sw.Write('\x0A');
                 sw.Write("<Root Type=\"DataLibrary.BE.TubeRawData\">"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<TubeId>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
-                sw.Write("<Row>992</Row>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
-                sw.Write("<Column>997</Column>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
+                sw.Write("<Row>999</Row>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
+                sw.Write("<Column>999</Column>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<Section>999</Section>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<ObjectName>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("</ObjectName>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
@@ -79,7 +79,7 @@ namespace WindowsFormsApplication2
                 sw.Write("<value__>1</value__>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("</RecordedFromLeg>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<SyncToEncoder>False</SyncToEncoder>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
-                sw.Write("<sampleRate>400000</sampleRate>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
+                sw.Write("<sampleRate>1000</sampleRate>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<MinValueDpComponent>-32768</MinValueDpComponent>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<MaxValueDpComponent>32767</MaxValueDpComponent>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
                 sw.Write("<BitCountDpComponent>16</BitCountDpComponent>"); sw.Write('\x0D'); sw.Write('\x0A'); sw.Write('\x20'); sw.Write('\x20');
@@ -217,7 +217,8 @@ namespace WindowsFormsApplication2
             const int bufferSize = 16;
             int count;
             long fLen = inDatafile.Length;
-            uint numPoints = (uint)(fLen - 1024) / 16;
+            uint numPoints = (uint)(fLen - 1024) * 3;
+            uint zero = 0;
             inDatafile.Seek(1024, 0);
             using (BinaryReader inbinfile = new BinaryReader(inDatafile))
             {
@@ -227,6 +228,10 @@ namespace WindowsFormsApplication2
                 //  numPoints = 4795; //hexadecimal values BB 12 00 00 represent decimal number 4795, the data points.
                 //  byte[] byteArray_numPoints = BitConverter.GetBytes(numPoints);
                 outbinfile.Write(numPoints);
+                outbinfile.Write(zero);
+                numPoints = numPoints / 48;
+                outbinfile.Write(numPoints);
+
                 int x280, x130, x60, x60a;
                 int y280, y130, y60, y60a;
 
@@ -249,12 +254,15 @@ namespace WindowsFormsApplication2
                     outbinfile.Write(x130);
                     outbinfile.Write(x60);
                     outbinfile.Write(x60a);
+                    outbinfile.Write(x60);
+                    outbinfile.Write(x60a);
 
                     outbinfile.Write(y280);
                     outbinfile.Write(y130);
                     outbinfile.Write(y60);
                     outbinfile.Write(y60a);
-
+                    outbinfile.Write(y60);
+                    outbinfile.Write(y60a);
 
                 }
 
@@ -267,7 +275,7 @@ namespace WindowsFormsApplication2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MakeHeader(linkLabel2.Text);
+          //  MakeHeader(linkLabel2.Text);
             SaveData(linkLabel1.Text, linkLabel2.Text);
 
         }
