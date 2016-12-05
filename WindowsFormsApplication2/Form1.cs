@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*! Program for convertation AIDA DEP files to EddyOne 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,21 +29,21 @@ namespace WindowsFormsApplication2
 
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) /// function for set input data file
         {
             openFileDialog1.FileName = "C:\\";
             openFileDialog1.ShowDialog();
             linkLabel1.Text = openFileDialog1.FileName;
         }
 
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) /// function for set output file
         {
             saveFileDialog1.FileName = "C:\\";
             saveFileDialog1.ShowDialog();
             linkLabel2.Text = saveFileDialog1.FileName;
         }
 
-        private void MakeHeader (string filename)
+        private void MakeHeader (string filename) /// Header constructor
         {
             using (StreamWriter sw = new StreamWriter(filename, false, System.Text.Encoding.Default))
             {
@@ -203,7 +206,7 @@ namespace WindowsFormsApplication2
 
 
         }
-        public static int MakeWord(byte low, byte high)
+        public static int MakeWord(byte low, byte high) /// create int from 2 bytes,  little endian format
         {
             int tmpk = (int) high << 25;
             tmpk = tmpk >> 25;
@@ -212,7 +215,7 @@ namespace WindowsFormsApplication2
             return (tmpk << 8) | low;
         }
 
-        private void SaveData(string inputFile, string outputfile)
+        private void SaveData(string inputFile, string outputfile) /// converter binary formats data
         {
             FileStream outDatafile = new FileStream(outputfile, FileMode.Append);
             BinaryWriter outbinfile = new BinaryWriter(outDatafile);
@@ -283,7 +286,7 @@ namespace WindowsFormsApplication2
               inDatafile.Dispose();
           }
 
-          private void Save_header(string sourcefn, string destinfn)
+          private void Save_header(string sourcefn, string destinfn) /// create header from template file
           {
               FileInfo fn = new FileInfo(sourcefn);
               fn.CopyTo(destinfn, true);
@@ -314,7 +317,7 @@ namespace WindowsFormsApplication2
 
           }
 
-          private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+          private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) /// set file name with template header
           {
               openFileDialog1.FileName = Application.StartupPath + "\\hedear.aaa";
               openFileDialog1.ShowDialog();
