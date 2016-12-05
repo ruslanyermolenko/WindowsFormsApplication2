@@ -205,7 +205,11 @@ namespace WindowsFormsApplication2
         }
         public static int MakeWord(byte low, byte high)
         {
-            return ((int)high << 8) | low;
+            int tmpk = (int) high << 25;
+            tmpk = tmpk >> 25;
+
+            //    return ((int)high << 8) | low;
+            return (tmpk << 8) | low;
         }
 
         private void SaveData(string inputFile, string outputfile)
@@ -218,7 +222,7 @@ namespace WindowsFormsApplication2
             int count;
             long fLen = inDatafile.Length;
             uint numPoints = (uint)(fLen - 1024) * 3;
-            uint zero = 0;
+            int zero = 0;
             inDatafile.Seek(1024, 0);
             using (BinaryReader inbinfile = new BinaryReader(inDatafile))
             {
@@ -243,6 +247,7 @@ namespace WindowsFormsApplication2
 
                     x130 = MakeWord(buffer[4], buffer[5]);
                     y130 = MakeWord(buffer[6], buffer[7]);
+                 
 
                     x60 = MakeWord(buffer[8], buffer[9]);
                     y60 = MakeWord(buffer[10], buffer[11]);
@@ -250,51 +255,70 @@ namespace WindowsFormsApplication2
                     x60a = MakeWord(buffer[12], buffer[13]);
                     y60a = MakeWord(buffer[14], buffer[15]);
 
-                    outbinfile.Write(x280);
-                    outbinfile.Write(x130);
-                    outbinfile.Write(x60);
-                    outbinfile.Write(x60a);
-                    outbinfile.Write(x60);
-                    outbinfile.Write(x60a);
+               
 
-                    outbinfile.Write(y280);
-                    outbinfile.Write(y130);
-                    outbinfile.Write(y60);
-                    outbinfile.Write(y60a);
-                    outbinfile.Write(y60);
-                    outbinfile.Write(y60a);
 
+                                       outbinfile.Write(x280);
+                                       outbinfile.Write(x130);
+                                       outbinfile.Write(x60);
+                                       outbinfile.Write(x60a);
+                                       outbinfile.Write(zero);
+                                       outbinfile.Write(zero);
+
+                                       outbinfile.Write(y280);
+                                       outbinfile.Write(y130);
+                                       outbinfile.Write(y60);
+                                       outbinfile.Write(y60a);
+                                       outbinfile.Write(zero);
+                                       outbinfile.Write(zero);
+                   
+                   
+                    
                 }
 
-            }
+              }
 
-            outbinfile.Close();
-            outDatafile.Dispose();
-            inDatafile.Dispose();
-        }
+              outbinfile.Close();
+              outDatafile.Dispose();
+              inDatafile.Dispose();
+          }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-          //  MakeHeader(linkLabel2.Text);
-            SaveData(linkLabel1.Text, linkLabel2.Text);
+          private void Save_header(string sourcefn, string destinfn)
+          {
+              FileInfo fn = new FileInfo(sourcefn);
+              fn.CopyTo(destinfn, true);
+          }
 
-        }
+          private void button1_Click(object sender, EventArgs e)
+          {
+              //  MakeHeader(linkLabel2.Text);
+              Save_header(linkLabel3.Text, linkLabel2.Text);
+              SaveData(linkLabel1.Text, linkLabel2.Text);
 
-   
+          }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            progressBar1.Increment(1);
-        }
 
-        private void process1_Exited(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+          private void timer1_Tick(object sender, EventArgs e)
+          {
+              progressBar1.Increment(1);
+          }
 
-        }
-    }
-}
+          private void process1_Exited(object sender, EventArgs e)
+          {
+
+          }
+
+          private void Form1_Load(object sender, EventArgs e)
+          {
+
+          }
+
+          private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+          {
+              openFileDialog1.FileName = Application.StartupPath + "\\hedear.aaa";
+              openFileDialog1.ShowDialog();
+              linkLabel3.Text = openFileDialog1.FileName;
+          }
+      }
+  }

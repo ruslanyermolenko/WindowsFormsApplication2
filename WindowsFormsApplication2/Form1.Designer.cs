@@ -39,6 +39,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,6 +61,7 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.linkLabel1);
             this.flowLayoutPanel1.Controls.Add(this.linkLabel2);
+            this.flowLayoutPanel1.Controls.Add(this.linkLabel3);
             this.flowLayoutPanel1.Controls.Add(this.button1);
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -87,6 +89,13 @@
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // linkLabel3
+            // 
+            resources.ApplyResources(this.linkLabel3, "linkLabel3");
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
             // Form1
             // 
@@ -116,6 +125,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.LinkLabel linkLabel3;
     }
 }
 
