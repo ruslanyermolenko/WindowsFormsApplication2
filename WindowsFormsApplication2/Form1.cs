@@ -215,10 +215,18 @@ namespace WindowsFormsApplication2
             return (tmpk << 8) | low;
         }
 
-        private void SaveData(string inputFile, string outputfile) /// converter binary formats data
+        private void SaveData(string inputFile, string outputfile, string row, string col, string section) /// converter binary formats data
         {
             FileStream outDatafile = new FileStream(outputfile, FileMode.Append);
             BinaryWriter outbinfile = new BinaryWriter(outDatafile);
+         /*   outbinfile.Seek(460, 0);
+            outbinfile.Write(row);
+            outbinfile.Seek(483, 0);
+            outbinfile.Write(col);
+            outbinfile.Seek(510, 0);
+            outbinfile.Write(section);
+            outbinfile.Seek((int)outDatafile.Length, 0);
+            */
 
             FileStream inDatafile = new FileStream(inputFile, FileMode.Open, FileAccess.Read);
             const int bufferSize = 16;
@@ -288,15 +296,17 @@ namespace WindowsFormsApplication2
 
           private void Save_header(string sourcefn, string destinfn) /// create header from template file
           {
-              FileInfo fn = new FileInfo(sourcefn);
+            FileInfo fn = new FileInfo(sourcefn);
+            
               fn.CopyTo(destinfn, true);
+              
           }
 
           private void button1_Click(object sender, EventArgs e)
           {
               //  MakeHeader(linkLabel2.Text);
               Save_header(linkLabel3.Text, linkLabel2.Text);
-              SaveData(linkLabel1.Text, linkLabel2.Text);
+       //       SaveData(linkLabel1.Text, linkLabel2.Text);
 
           }
 
@@ -323,5 +333,40 @@ namespace WindowsFormsApplication2
               openFileDialog1.ShowDialog();
               linkLabel3.Text = openFileDialog1.FileName;
           }
-      }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            folderBrowserDialog1.ShowDialog();
+            linkLabel4.Text = folderBrowserDialog1.SelectedPath;
+        }
+
+        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            folderBrowserDialog1.ShowDialog();
+            linkLabel5.Text = folderBrowserDialog1.SelectedPath;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string[] files = Directory.GetFiles(linkLabel4.Text, "*.DEP", SearchOption.AllDirectories);
+
+            int index = 0;
+            progressBar1.Maximum = files.Length;
+            foreach (string infile in files)
+            {
+                string onlyfilename = Path.GetFileName(infile);
+
+                string row = onlyfilename.Substring(1, 3);
+                string col = onlyfilename.Substring(5, 3);
+
+                string section = "001";
+
+                string outfile = linkLabel5.Text + "\\DHotR"+ row + "C" + col + "I" + section + ".aaa";
+                Save_header(linkLabel3.Text, outfile);
+                SaveData(infile, outfile, row, col, section);
+                progressBar1.Increment(1);
+            }
+
+        }
+    }
   }
