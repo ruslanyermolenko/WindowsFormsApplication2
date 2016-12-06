@@ -215,7 +215,7 @@ namespace WindowsFormsApplication2
             return (tmpk << 8) | low;
         }
 
-        private void SaveData(string inputFile, string outputfile, string row, string col, string section) /// converter binary formats data
+        private void SaveData(string inputFile, string outputfile) /// converter binary formats data
         {
             FileStream outDatafile = new FileStream(outputfile, FileMode.Append);
             BinaryWriter outbinfile = new BinaryWriter(outDatafile);
@@ -294,18 +294,50 @@ namespace WindowsFormsApplication2
               inDatafile.Dispose();
           }
 
-          private void Save_header(string sourcefn, string destinfn) /// create header from template file
-          {
-            FileInfo fn = new FileInfo(sourcefn);
+        private void Save_header(string sourcefn, string destinfn, string row, string col, string section) /// create header from template file
+        {
+   //            FileInfo fn = new FileInfo(sourcefn);
+
+     //             fn.CopyTo(destinfn, true);
+
+            FileStream outDatafile = new FileStream(destinfn, FileMode.Create);
+            BinaryWriter outbinfile = new BinaryWriter(outDatafile);
+            FileStream inDatafile = new FileStream(sourcefn, FileMode.Open, FileAccess.Read);
+            //  const int bufferSize = 16;
+            //      
+            int row_index = 460;
+            int col_index = 483;
+            int sec_index = 510;
+            int id_index =  1362;
+
+            long fLen = inDatafile.Length;
+            int count;
+            using (BinaryReader inbinfile = new BinaryReader(inDatafile))
+            {
+                byte[] buffer = new byte[fLen];
+
+                while ((count = inbinfile.Read(buffer, 0, buffer.Length)) != 0)
+                {
+
+                  for (int inx=0; inx < 3;   buffer[row_index + inx] = (byte)row[inx++]);
+                  for (int inx = 0; inx < 3; buffer[col_index + inx] = (byte)col[inx++]);
+                 for (int inx = 0; inx < 3; buffer[sec_index + inx] = (byte)section[inx++]);
+
+                 buffer[id_index] = (byte)section[2];
+   
+                       outbinfile.Write(buffer, 0, count);
+                }
+            }
+            outbinfile.Close();
+            outDatafile.Dispose();
+            inDatafile.Dispose();
             
-              fn.CopyTo(destinfn, true);
-              
-          }
+        }
 
           private void button1_Click(object sender, EventArgs e)
           {
               //  MakeHeader(linkLabel2.Text);
-              Save_header(linkLabel3.Text, linkLabel2.Text);
+              //Save_header(linkLabel3.Text, linkLabel2.Text);
        //       SaveData(linkLabel1.Text, linkLabel2.Text);
 
           }
@@ -350,7 +382,7 @@ namespace WindowsFormsApplication2
         {
             string[] files = Directory.GetFiles(linkLabel4.Text, "*.DEP", SearchOption.AllDirectories);
 
-            int index = 0;
+            int index = 1;
             progressBar1.Maximum = files.Length;
             foreach (string infile in files)
             {
@@ -359,12 +391,16 @@ namespace WindowsFormsApplication2
                 string row = onlyfilename.Substring(1, 3);
                 string col = onlyfilename.Substring(5, 3);
 
-                string section = "001";
-
+                string section = ""; 
+                 if (index < 10 ) section  = "00" + index.ToString();
+                 if ((index >= 10)&&(index < 100)) section = "0" + index.ToString();
+                if (index >= 100) section =  index.ToString();
+                index++;
                 string outfile = linkLabel5.Text + "\\DHotR"+ row + "C" + col + "I" + section + ".aaa";
-                Save_header(linkLabel3.Text, outfile);
-                SaveData(infile, outfile, row, col, section);
+                Save_header(linkLabel3.Text, outfile, row, col, section);
+                SaveData(infile, outfile);
                 progressBar1.Increment(1);
+                if (index > 9) return;
             }
 
         }
